@@ -82,8 +82,6 @@ export const useHomeScreenRules = () => {
 
   const handleTopTracks = useCallback(
     async (data: IArtist[]) => {
-      console.log(data[0].name);
-
       const topTracks = data.map(async (artist) => {
         const tracks = await getArtistsHook.getArtistTopTracks(artist.id);
         return tracks!;
@@ -130,7 +128,7 @@ export const useHomeScreenRules = () => {
 
       const filtered = tracks.filter((track) => !selected.includes(track));
 
-      const playlistData = [...selected, ...filtered];
+      const playlistData = [...selected, ...shuffleList(filtered)];
 
       return shuffleList(playlistData.slice(0, currentQuantity));
     },

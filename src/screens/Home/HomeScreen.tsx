@@ -79,7 +79,7 @@ export const HomeScreen = () => {
                 <ButtonComponent
                   variant='contained'
                   onClick={handleOnSearch}
-                  disabled={isSearchBusy}
+                  disabled={isSearchBusy || currentInput === ''}
                   startIcon={<SearchIcon />}
                 >
                   Buscar
