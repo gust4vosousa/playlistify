@@ -1,4 +1,4 @@
-import { blueGrey, blue, grey } from '@material-ui/core/colors';
+import { blueGrey, blue, grey, red } from '@material-ui/core/colors';
 
 export const theme = {
   main: {
@@ -15,5 +15,8 @@ export const theme = {
     primary: 'white',
     secondary: blue[500],
     label: grey[500]
+  },
+  error: {
+    primary: red[600]
   }
 };

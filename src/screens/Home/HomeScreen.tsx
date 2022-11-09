@@ -14,14 +14,17 @@ import {
   Header,
   ButtonComponent,
   CardComponent,
-  TitleContainer
+  TitleContainer,
+  ErrorMessage
 } from './HomeScreen.styles';
 import SearchIcon from '@mui/icons-material/Search';
 import { Grid } from '@material-ui/core';
-import SendIcon from '@mui/icons-material/Send';
-import { ArtistListComponent } from '../../components/List/ListComponent';
+import { ArtistListComponent } from '../../components/ArtistList/ArtistListComponent';
 import ClearIcon from '@mui/icons-material/Clear';
 import { theme } from '../../theme/ThemeVariables';
+import { TrackListComponent } from '../../components/TrackList/TrackListComponent';
+import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 
 export const HomeScreen = () => {
   const {
@@ -36,14 +39,24 @@ export const HomeScreen = () => {
     handleQuantity,
     currentQuantity,
     similarArtists,
-    setSimilarArtists
+    setSimilarArtists,
+    handleOnSubmit,
+    playlist,
+    isPlaylistBusy,
+    quantityError
   } = useHomeScreenRules();
 
   return (
     <HomeContainer>
       <Header>
         <TitleContainer>
-          <Typography fontSize={32}>Playlistify</Typography>
+          <Typography
+            fontSize={32}
+            style={{ paddingRight: 8, cursor: 'arrow' }}
+          >
+            Playlistify
+          </Typography>
+          <LibraryMusicIcon fontSize='large' />
         </TitleContainer>
       </Header>
 
@@ -84,9 +97,40 @@ export const HomeScreen = () => {
         </Grid>
 
         <Grid item xs={6}>
-          <Grid item xs={12} spacing={2}>
+          {playlist.length >= 1 && (
+            <Grid item xs={12}>
+              <CardComponent elevation={3}>
+                <Typography fontSize={24}>Playlist</Typography>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <TrackListComponent data={playlist} />
+                  </Grid>
+                </Grid>
+              </CardComponent>
+            </Grid>
+          )}
+
+          <Grid item xs={12}>
             <CardComponent elevation={3}>
-              <Grid container spacing={1}>
+              <Grid
+                container
+                spacing={2}
+                style={{ justifyContent: 'center', alignItems: 'center' }}
+              >
+                {quantityError && (
+                  <Grid item xs={12}>
+                    <ErrorMessage>
+                      <Typography>
+                        {`Uma playlist com ${
+                          selectedArtists.length
+                        } artista(s), pode conter no máximo ${
+                          selectedArtists.length * 10
+                        } músicas.`}
+                      </Typography>
+                    </ErrorMessage>
+                  </Grid>
+                )}
+
                 <Grid item xs={2}>
                   <FormControl style={{ width: '100%' }}>
                     <InputLabel style={{ color: `${theme.text.label}` }}>
@@ -104,7 +148,13 @@ export const HomeScreen = () => {
                     >
                       <MenuItem value={10}>10</MenuItem>
                       <MenuItem value={20}>20</MenuItem>
+                      <MenuItem value={30}>30</MenuItem>
+                      <MenuItem value={40}>40</MenuItem>
                       <MenuItem value={50}>50</MenuItem>
+                      <MenuItem value={60}>60</MenuItem>
+                      <MenuItem value={70}>70</MenuItem>
+                      <MenuItem value={80}>80</MenuItem>
+                      <MenuItem value={90}>90</MenuItem>
                       <MenuItem value={100}>100</MenuItem>
                     </Select>
                   </FormControl>
@@ -117,30 +167,23 @@ export const HomeScreen = () => {
                         onChange={() => setSimilarArtists(!similarArtists)}
                       />
                     }
-                    label='Artistas similares'
+                    label='Incluir artistas similares'
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <ButtonComponent
                     variant='contained'
-                    onClick={() => null}
-                    disabled={selectedArtists.length <= 0}
-                    startIcon={<SendIcon />}
+                    onClick={handleOnSubmit}
+                    disabled={
+                      selectedArtists.length <= 0 ||
+                      isPlaylistBusy ||
+                      quantityError
+                    }
+                    startIcon={<PlayCircleOutlineIcon />}
                   >
                     Gerar playlist
                   </ButtonComponent>
                 </Grid>
-              </Grid>
-            </CardComponent>
-          </Grid>
-
-          <Grid item xs={12}>
-            <CardComponent elevation={3}>
-              <Grid
-                container
-                spacing={2}
-                style={{ justifyContent: 'center', alignItems: 'center' }}
-              >
                 <Grid item>
                   <Typography fontSize={24}>Artistas selecionados</Typography>
                 </Grid>
@@ -150,6 +193,7 @@ export const HomeScreen = () => {
                     onClick={() => setSelectedArtists([])}
                     disabled={selectedArtists.length <= 0}
                     startIcon={<ClearIcon />}
+                    style={{ backgroundColor: `${theme.error.primary}` }}
                   >
                     Limpar seleção
                   </ButtonComponent>
@@ -159,6 +203,7 @@ export const HomeScreen = () => {
                 <ArtistListComponent
                   data={selectedArtists}
                   handleSelect={handleSelect}
+                  editable
                 />
               ) : (
                 <Typography>Nenhum artista selecionado</Typography>

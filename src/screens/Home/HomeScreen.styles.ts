@@ -22,7 +22,9 @@ export const Header = styled(Box)({
 
 export const TitleContainer = styled(Box)({
   display: 'flex',
-  justifyContent: 'center'
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: 8
 });
 
 export const CardComponent = styled(Card)({
@@ -37,4 +39,14 @@ export const CardComponent = styled(Card)({
 export const ButtonComponent = styled(Button)({
   color: `${theme.text.primary}`,
   margin: 8
+});
+
+export const ErrorMessage = styled(Card)({
+  display: 'flex',
+  backgroundColor: `${theme.error.primary}`,
+  height: '3rem',
+  color: `${theme.text.primary}`,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginBottom: 16
 });
