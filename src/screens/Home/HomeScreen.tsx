@@ -144,7 +144,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
           </Grid>
         ) : (
           <Fragment>
-            <Grid item xs={6}>
+            <Grid item sm={12} md={6}>
               <CardComponent elevation={3}>
                 <Typography fontSize={18}>
                   Agora me fala quais artistas você quer incluir na playlist
@@ -158,7 +158,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       onSubmit={handleOnSearch}
                     />
                   </Grid>
-                  <Grid item xs={2}>
+                  <Grid item sm={12} md={3}>
                     <ButtonComponent
                       variant='contained'
                       onClick={handleOnSearch}
@@ -179,7 +179,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
               </CardComponent>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item sm={12} md={6}>
               {playlist.length >= 1 && (
                 <Grid item xs={12}>
                   <CardComponent elevation={3}>
@@ -243,7 +243,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       </Grid>
                     )}
 
-                    <Grid item xs={2}>
+                    <Grid item sm={4} md={2}>
                       <FormControl style={{ width: '100%' }}>
                         <InputLabel style={{ color: `${theme.text.label}` }}>
                           Músicas
@@ -271,7 +271,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                         </Select>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item sm={6} md={4}>
                       <FormControlLabel
                         control={
                           <Checkbox
