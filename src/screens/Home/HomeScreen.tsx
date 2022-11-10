@@ -129,7 +129,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       </Typography>
                     </TextContainer>
                     <SpotifyAuth
-                      redirectUri='https://gust4vosousa.github.io/playlistify/callback'
+                      redirectUri='https://gust4vosousa.github.io/playlistify/'
                       clientID='330697a441ab4628898c9da7100cec1c'
                       scopes={[Scopes.userReadPrivate, Scopes.userReadEmail]}
                       onAccessToken={(token: string) => setAuthToken(token)}
