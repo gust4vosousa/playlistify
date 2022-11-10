@@ -82,7 +82,8 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
               <Grid container>
                 <Grid
                   item
-                  xs={6}
+                  sm={12}
+                  md={6}
                   style={{
                     textAlign: 'justify',
                     borderRight: '2px solid',
@@ -116,7 +117,8 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                 </Grid>
                 <Grid
                   item
-                  xs={6}
+                  sm={12}
+                  md={6}
                   style={{
                     textAlign: 'justify',
                     paddingLeft: 16
