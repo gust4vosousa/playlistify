@@ -11,3 +11,9 @@ export interface IRelatedArtistResponse {
 export interface ITopTracksResponse {
   tracks: ITrack[];
 }
+
+export interface IPostPlaylistRequest {
+  name: string;
+  description: string;
+  public: boolean;
+}

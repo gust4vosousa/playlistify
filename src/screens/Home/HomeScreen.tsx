@@ -33,6 +33,7 @@ import { SpotifyAuth, Scopes } from 'react-spotify-auth';
 import styles from '../../theme/styles.module.css';
 import { Fragment } from 'react';
 import ShareIcon from '@mui/icons-material/Share';
+import { PlaylistModal } from '../../modals/Playlist/PlaylistModal';
 
 export const HomeScreen: React.FC<IHomeScreenProps> = () => {
   const {
@@ -58,6 +59,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
 
   return (
     <HomeContainer>
+      {/* <PlaylistModal /> */}
       <Header>
         <TitleContainer>
           <Typography

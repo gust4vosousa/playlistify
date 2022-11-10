@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { IArtist, ITrack } from '../../@types/Entity.types';
-import { useGetArtistsHook } from '../../hooks/getArtists/useGetArtistsHook';
+import { useSpotifyServicesHook } from '../../hooks/spotifyServices/useSpotifyServicesHook';
 import Cookies from 'js-cookie';
 
 export const useHomeScreenRules = () => {
@@ -14,7 +14,7 @@ export const useHomeScreenRules = () => {
   const [selectedArtists, setSelectedArtists] = useState<IArtist[]>([]);
   const [playlist, setPlaylist] = useState<ITrack[]>([]);
 
-  const getArtistsHook = useGetArtistsHook(authToken);
+  const getArtistsHook = useSpotifyServicesHook(authToken);
 
   const quantityError = useMemo(
     () =>

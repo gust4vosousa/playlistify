@@ -2,11 +2,12 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { IArtist } from '../../@types/Entity.types';
 import {
   IArtistSearchResponse,
+  IPostPlaylistRequest,
   IRelatedArtistResponse,
   ITopTracksResponse
-} from './useGetArtistsHook.types';
+} from './useSpotifyServicesHook.types';
 
-export const useGetArtistsHook = (authToken?: string) => {
+export const useSpotifyServicesHook = (authToken?: string) => {
   const baseUrl: string = 'https://api.spotify.com/v1';
   const headers: AxiosRequestConfig = {
     headers: {
@@ -73,10 +74,50 @@ export const useGetArtistsHook = (authToken?: string) => {
     }
   };
 
+  const createPlaylist = async (
+    userId: string,
+    params: IPostPlaylistRequest
+  ) => {
+    const apiUrl = `${baseUrl}/users/${userId}/playlists`;
+
+    try {
+      const response = await axios.post(apiUrl, params, {
+        ...headers
+      });
+
+      const data = response.data;
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addItemsToPlaylist = async (
+    playlistId: string,
+    tracksURIs: string[]
+  ) => {
+    const apiUrl = `${baseUrl}/playlists/${playlistId}/tracks`;
+
+    try {
+      const response = await axios.post(apiUrl, tracksURIs, {
+        ...headers
+      });
+
+      const data: string = response.data;
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
     getArtist,
     searchArtists,
     getRelatedArtists,
-    getArtistTopTracks
+    getArtistTopTracks,
+    createPlaylist,
+    addItemsToPlaylist
   };
 };

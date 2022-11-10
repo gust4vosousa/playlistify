@@ -16,10 +16,18 @@ export interface ITrack {
   name: string;
   artists: IArtist[];
   album: IAlbum;
+  uri: string;
 }
 
 export interface IAlbum {
   id: string;
   name: string;
   images: IImage[];
+}
+
+export interface IPlaylist {
+  id: string;
+  name: string;
+  description: string;
+  public: boolean;
 }
