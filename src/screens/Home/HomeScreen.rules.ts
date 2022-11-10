@@ -5,6 +5,9 @@ import Cookies from 'js-cookie';
 
 export const useHomeScreenRules = () => {
   const [authToken, setAuthToken] = useState(Cookies.get('spotifyAuthToken'));
+  const [isAuthenticated, setisAuthenticated] = useState<boolean>(
+    authToken ? true : false
+  );
   const [currentInput, setCurrentInput] = useState<string>('');
   const [currentQuantity, setCurrentQuantity] = useState<number>(10);
   const [similarArtists, setSimilarArtists] = useState<boolean>(false);
@@ -157,6 +160,8 @@ export const useHomeScreenRules = () => {
     isPlaylistBusy,
     quantityError,
     setAuthToken,
-    authToken
+    authToken,
+    isAuthenticated,
+    setisAuthenticated
   };
 };

@@ -13,11 +13,15 @@ export const HomeContainer = styled(Box)({
 });
 
 export const Header = styled(Box)({
+  display: 'flex',
+  flexDirection: 'row',
   backgroundColor: `${theme.main.primary}`,
   color: `${theme.text.primary}`,
   textAlign: 'center',
   marginBottom: 16,
-  width: '100%'
+  width: '100%',
+  justifyContent: 'center',
+  alignItems: 'center'
 });
 
 export const TitleContainer = styled(Box)({

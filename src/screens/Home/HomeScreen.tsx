@@ -54,7 +54,9 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
     isPlaylistBusy,
     quantityError,
     setAuthToken,
-    authToken
+    authToken,
+    isAuthenticated,
+    setisAuthenticated
   } = useHomeScreenRules();
 
   return (
@@ -70,10 +72,18 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
           </Typography>
           <LibraryMusicIcon fontSize='large' />
         </TitleContainer>
+        <ButtonComponent
+          onClick={() => {
+            setAuthToken(undefined);
+            setisAuthenticated(false);
+          }}
+        >
+          Logout
+        </ButtonComponent>
       </Header>
 
       <Grid container spacing={0}>
-        {!authToken ? (
+        {!isAuthenticated ? (
           <Grid item xs={12}>
             <CardComponent elevation={3}>
               <Typography fontSize={64} fontWeight={800}>
