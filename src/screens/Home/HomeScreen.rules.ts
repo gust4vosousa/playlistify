@@ -3,6 +3,7 @@ import { IArtist, ITrack } from '../../@types/Entity.types';
 import { useSpotifyServicesHook } from '../../hooks/spotifyServices/useSpotifyServicesHook';
 import Cookies from 'js-cookie';
 import { IPostPlaylistRequest } from '../../hooks/spotifyServices/useSpotifyServicesHook.types';
+import { sleep } from '../../utils/sleep';
 
 export const useHomeScreenRules = () => {
   const [authToken, setAuthToken] = useState(Cookies.get('spotifyAuthToken'));
@@ -39,14 +40,6 @@ export const useHomeScreenRules = () => {
     [playlist, spotifyServices]
   );
 
-  const handleInput = useCallback((value: string) => {
-    setCurrentInput(value);
-  }, []);
-
-  const handleQuantity = useCallback((value: number) => {
-    setCurrentQuantity(value);
-  }, []);
-
   const handleOnSearch = useCallback(async () => {
     setIsSearchBusy(true);
 
@@ -55,6 +48,15 @@ export const useHomeScreenRules = () => {
     setSearchResult(artistList?.artists?.items!);
     setIsSearchBusy(false);
   }, [currentInput, spotifyServices]);
+
+  const handleInput = useCallback((value: string) => {
+    setCurrentInput(value);
+    sleep(2000).then(() => handleOnSearch)
+  }, [handleOnSearch]);
+
+  const handleQuantity = useCallback((value: number) => {
+    setCurrentQuantity(value);
+  }, []);
 
   const handleSelect = useCallback(
     (artist: IArtist) => {
