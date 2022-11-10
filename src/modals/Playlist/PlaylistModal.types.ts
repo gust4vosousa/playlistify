@@ -2,6 +2,7 @@ import { IPostPlaylistRequest } from '../../hooks/spotifyServices/useSpotifyServ
 
 export interface IPlaylistModalProps {
   open: boolean;
+  isBusy: boolean;
   onHandleClose: () => void;
   onHandleSubmit: (data: IPostPlaylistRequest) => void;
 }

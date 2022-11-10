@@ -8,7 +8,7 @@ import {
   FormControlLabel,
   Box,
   Grid,
-  CircularProgress,
+  CircularProgress
 } from '@mui/material';
 import { InputComponent } from '../../components/Input/InputComponent';
 import { useHomeScreenRules } from './HomeScreen.rules';
@@ -26,7 +26,7 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import { ArtistListComponent } from '../../components/ArtistList/ArtistListComponent';
 import ClearIcon from '@mui/icons-material/Clear';
-import { theme } from '../../theme/ThemeVariables';
+import { theme } from '../../theme/variables';
 import { TrackListComponent } from '../../components/TrackList/TrackListComponent';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
@@ -49,6 +49,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
     handleOnSubmit,
     handleQuantity,
     handleSelect,
+    isExportBusy,
     isModalVisible,
     isPlaylistBusy,
     isSearchBusy,
@@ -68,6 +69,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
       {isModalVisible && (
         <PlaylistModal
           open={isModalVisible}
+          isBusy={isExportBusy}
           onHandleClose={() => setIsModalVisible(false)}
           onHandleSubmit={(formData: IPostPlaylistRequest) =>
             handleExport(formData)
@@ -154,8 +156,8 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       </Typography>
                     </TextContainer>
                     <SpotifyAuth
-                      // redirectUri='https://gust4vosousa.github.io/playlistify/'
-                      redirectUri='http://localhost:3000/callback'
+                      redirectUri='https://gust4vosousa.github.io/playlistify/'
+                      // redirectUri='http://localhost:3000/callback'
                       clientID='330697a441ab4628898c9da7100cec1c'
                       scopes={[
                         Scopes.userReadPrivate,
@@ -169,6 +171,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       title='Continuar com Spotify'
                       btnClassName={styles.Button}
                       logoClassName={styles.Logo}
+                      noCookie
                     />
                   </LoginButtonContainer>
                 </Grid>
@@ -188,7 +191,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       label='Artista'
                       value={currentInput}
                       placeholder='Ex.: Madonna'
-                      onChange={value => setCurrentInput(value)}
+                      onChange={(value) => setCurrentInput(value)}
                       onSubmit={handleOnSearch}
                     />
                   </Grid>
@@ -199,12 +202,12 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       disabled={isSearchBusy || currentInput === ''}
                       startIcon={<SearchIcon />}
                     >
-                    Buscar
+                      Buscar
                     </ButtonComponent>
                   </Grid>
                 </Grid>
 
-                {isSearchBusy && (<CircularProgress style={{margin: 10}} />)}
+                {isSearchBusy && <CircularProgress style={{ margin: 10 }} />}
 
                 {!isSearchBusy && artistList.length > 0 && (
                   <ArtistListComponent
@@ -320,18 +323,20 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       />
                     </Grid>
                     <Grid item xs={6}>
-                    {isPlaylistBusy ? (<CircularProgress style={{margin: 10}} />) : (<ButtonComponent
-                        variant='contained'
-                        onClick={handleOnSubmit}
-                        disabled={
-                          selectedArtists.length <= 0 ||
-                          quantityError
-                        }
-                        startIcon={<PlayCircleOutlineIcon />}
-                      >
-                        Gerar playlist
-                      </ButtonComponent>)}
-                      
+                      {isPlaylistBusy ? (
+                        <CircularProgress style={{ margin: 10 }} />
+                      ) : (
+                        <ButtonComponent
+                          variant='contained'
+                          onClick={handleOnSubmit}
+                          disabled={
+                            selectedArtists.length <= 0 || quantityError
+                          }
+                          startIcon={<PlayCircleOutlineIcon />}
+                        >
+                          Gerar playlist
+                        </ButtonComponent>
+                      )}
                     </Grid>
                     <Grid item>
                       <Typography fontSize={24}>

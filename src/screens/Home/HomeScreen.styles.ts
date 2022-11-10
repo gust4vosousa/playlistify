@@ -1,5 +1,5 @@
 import { Box, Button, Card, styled } from '@mui/material';
-import { theme } from '../../theme/ThemeVariables';
+import { theme } from '../../theme/variables';
 
 export const HomeContainer = styled(Box)({
   backgroundColor: `${theme.background.primary}`,

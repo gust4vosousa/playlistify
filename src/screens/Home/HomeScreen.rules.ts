@@ -1,17 +1,17 @@
 import { useCallback, useMemo, useState } from 'react';
 import { IArtist, ITrack } from '../../@types/Entity.types';
 import { useSpotifyServicesHook } from '../../hooks/spotifyServices/useSpotifyServicesHook';
-import Cookies from 'js-cookie';
 import { IPostPlaylistRequest } from '../../hooks/spotifyServices/useSpotifyServicesHook.types';
 
 export const useHomeScreenRules = () => {
-  const [authToken, setAuthToken] = useState(Cookies.get('spotifyAuthToken'));
+  const [authToken, setAuthToken] = useState<string>('');
   const [currentInput, setCurrentInput] = useState<string>('');
-  const [lastSearch, setLastSearch] = useState<string>('')
+  const [lastSearch, setLastSearch] = useState<string>('');
   const [currentQuantity, setCurrentQuantity] = useState<number>(10);
   const [similarArtists, setSimilarArtists] = useState<boolean>(false);
   const [isSearchBusy, setIsSearchBusy] = useState<boolean>(false);
   const [isPlaylistBusy, setIsPlaylistBusy] = useState<boolean>(false);
+  const [isExportBusy, setIsExportBusy] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [searchResult, setSearchResult] = useState<IArtist[]>([]);
   const [selectedArtists, setSelectedArtists] = useState<IArtist[]>([]);
@@ -31,25 +31,42 @@ export const useHomeScreenRules = () => {
 
   const handleExport = useCallback(
     async (formData: IPostPlaylistRequest) => {
-      const playlistId = await spotifyServices.createPlaylist(formData);
+      setIsExportBusy(true);
+
+      const playlistPostRequestData: IPostPlaylistRequest = {
+        name: formData.name,
+        description:
+          formData.description === ''
+            ? 'Playlist gerada automaticamente pelo Playlistify'
+            : formData.description,
+        public: formData.public
+      };
+
+      const playlistId = await spotifyServices.createPlaylist(
+        playlistPostRequestData
+      );
+
       await spotifyServices.addItemsToPlaylist(
         playlistId!,
         playlist.map((track) => track.uri)
       );
+
+      setIsExportBusy(false);
+      setIsModalVisible(false);
     },
     [playlist, spotifyServices]
   );
 
   const handleOnSearch = useCallback(async () => {
     if (lastSearch === currentInput) {
-      return
+      return;
     }
 
     setIsSearchBusy(true);
 
     const artistList = await spotifyServices.searchArtists(currentInput);
 
-    setLastSearch(currentInput)
+    setLastSearch(currentInput);
     setSearchResult(artistList?.artists?.items!);
     setIsSearchBusy(false);
   }, [currentInput, lastSearch, spotifyServices]);
@@ -139,14 +156,14 @@ export const useHomeScreenRules = () => {
   );
 
   const handleOnSubmit = useCallback(async () => {
-      setIsPlaylistBusy(true);
-      setPlaylist([]);
+    setIsPlaylistBusy(true);
+    setPlaylist([]);
 
-      const trackList = await handleTrackList();
-      const playlistData = preparePlaylist(trackList);
+    const trackList = await handleTrackList();
+    const playlistData = preparePlaylist(trackList);
 
-      setPlaylist(playlistData);
-      setIsPlaylistBusy(false);
+    setPlaylist(playlistData);
+    setIsPlaylistBusy(false);
   }, [handleTrackList, preparePlaylist]);
 
   return {
@@ -159,7 +176,8 @@ export const useHomeScreenRules = () => {
     handleOnSubmit,
     handleQuantity,
     handleSelect,
-    isModalVisible: true,
+    isExportBusy,
+    isModalVisible,
     isPlaylistBusy,
     isSearchBusy,
     playlist,

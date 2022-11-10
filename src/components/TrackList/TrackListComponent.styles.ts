@@ -1,5 +1,5 @@
 import { Box, styled } from '@mui/material';
-import { theme } from '../../theme/ThemeVariables';
+import { theme } from '../../theme/variables';
 
 export const ItemContainer = styled(Box)({
   padding: 8,

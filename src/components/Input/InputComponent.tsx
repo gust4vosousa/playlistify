@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { theme } from '../../theme/ThemeVariables';
+import { theme } from '../../theme/variables';
 import { Input } from './InputComponent.styles';
 import { IInputProps } from './InputComponent.types';
 
