@@ -1,18 +1,27 @@
-import { List, ListItem, ListItemText, Divider } from '@mui/material';
+import {
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar
+} from '@mui/material';
 import React, { Fragment } from 'react';
 import { ITrackListProps } from './TrackListComponent.types';
-import { ListContainer } from './TrackListComponent.styles';
+import { ItemContainer } from './TrackListComponent.styles';
 
 export const TrackListComponent: React.FC<ITrackListProps> = ({ data }) => {
   return (
-    <ListContainer>
-      <List>
-        {data.map((track, index) => {
-          const artistsNames = track.artists.map((artist) => artist.name);
+    <List>
+      {data.map((track, index) => {
+        const artistsNames = track.artists.map((artist) => artist.name);
 
-          return (
-            <Fragment key={track.id}>
+        return (
+          <Fragment key={track.id}>
+            <ItemContainer>
               <ListItem disablePadding>
+                <ListItemAvatar>
+                  <Avatar src={track.album.images[0].url} />
+                </ListItemAvatar>
                 <ListItemText
                   primary={`${index + 1}. ${track.name}`}
                   secondary={
@@ -21,13 +30,11 @@ export const TrackListComponent: React.FC<ITrackListProps> = ({ data }) => {
                       : artistsNames.slice(0, 2).toString()
                   }
                 />
-                <Divider variant='inset' />
               </ListItem>
-              <Divider variant='inset' />
-            </Fragment>
-          );
-        })}
-      </List>
-    </ListContainer>
+            </ItemContainer>
+          </Fragment>
+        );
+      })}
+    </List>
   );
 };

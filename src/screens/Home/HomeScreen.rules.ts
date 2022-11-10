@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { IArtist, ITrack } from '../../@types/Entity.types';
 import { useGetArtistsHook } from '../../hooks/getArtists/useGetArtistsHook';
-import { useGetAuth } from '../../hooks/getAuth/useGetAuthHook';
-import { IAuthProps } from '../../hooks/getAuth/useGetAuthHook.types';
+import Cookies from 'js-cookie';
 
 export const useHomeScreenRules = () => {
-  const [auth, setAuth] = useState<IAuthProps>();
+  const [authToken, setAuthToken] = useState(Cookies.get('spotifyAuthToken'));
   const [currentInput, setCurrentInput] = useState<string>('');
   const [currentQuantity, setCurrentQuantity] = useState<number>(10);
   const [similarArtists, setSimilarArtists] = useState<boolean>(false);
@@ -15,18 +14,7 @@ export const useHomeScreenRules = () => {
   const [selectedArtists, setSelectedArtists] = useState<IArtist[]>([]);
   const [playlist, setPlaylist] = useState<ITrack[]>([]);
 
-  const authProps = useGetAuth();
-  const getArtistsHook = useGetArtistsHook(auth);
-
-  useEffect(() => {
-    async function getAuth() {
-      const props = await authProps;
-      setAuth(props);
-    }
-
-    getAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const getArtistsHook = useGetArtistsHook(authToken);
 
   const quantityError = useMemo(
     () =>
@@ -167,6 +155,8 @@ export const useHomeScreenRules = () => {
     handleOnSubmit,
     playlist,
     isPlaylistBusy,
-    quantityError
+    quantityError,
+    setAuthToken,
+    authToken
   };
 };

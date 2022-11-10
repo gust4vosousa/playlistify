@@ -1,0 +1,21 @@
+.Button {
+  transition-duration: 300ms;
+  font-family: 'Rubik', Arial, Helvetica, sans-serif;
+  font-size: large;
+  font-weight: 600;
+  background-color: #1db954;
+  color: black;
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 32px;
+  border: none;
+  border-radius: 25px;
+}
+
+.Logo {
+  width: 32px;
+  margin-right: 8px;
+}

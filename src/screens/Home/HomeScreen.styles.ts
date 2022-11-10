@@ -50,3 +50,26 @@ export const ErrorMessage = styled(Card)({
   justifyContent: 'center',
   marginBottom: 16
 });
+
+export const TextContainer = styled(Box)({
+  margin: '16px 8px',
+  fontSize: 22
+});
+
+export const LoginButtonContainer = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '100%',
+  flexDirection: 'column'
+});
+
+export const ListContainer = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  backgroundColor: `${theme.background.light}`,
+  padding: '16px 16px',
+  borderRadius: 8,
+  marginTop: 28,
+  alignItems: 'center'
+});
