@@ -5,7 +5,8 @@ import {
   FormControl,
   InputLabel,
   Checkbox,
-  FormControlLabel
+  FormControlLabel,
+  Box
 } from '@mui/material';
 import { InputComponent } from '../../components/Input/InputComponent';
 import { useHomeScreenRules } from './HomeScreen.rules';
@@ -55,8 +56,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
     quantityError,
     setAuthToken,
     authToken,
-    isAuthenticated,
-    setisAuthenticated
+    handleLogout
   } = useHomeScreenRules();
 
   return (
@@ -72,18 +72,11 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
           </Typography>
           <LibraryMusicIcon fontSize='large' />
         </TitleContainer>
-        <ButtonComponent
-          onClick={() => {
-            setAuthToken(undefined);
-            setisAuthenticated(false);
-          }}
-        >
-          Logout
-        </ButtonComponent>
+        <ButtonComponent onClick={handleLogout}>Logout</ButtonComponent>
       </Header>
 
       <Grid container spacing={0}>
-        {!isAuthenticated ? (
+        {!authToken ? (
           <Grid item xs={12}>
             <CardComponent elevation={3}>
               <Typography fontSize={64} fontWeight={800}>
@@ -96,7 +89,6 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                   md={6}
                   style={{
                     textAlign: 'justify',
-                    borderRight: '2px solid',
                     paddingRight: 16
                   }}
                 >
@@ -125,13 +117,23 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                     </Typography>
                   </TextContainer>
                 </Grid>
+                <Grid item xs={1}>
+                  <Box
+                    style={{
+                      width: '2px',
+                      backgroundColor: 'white',
+                      height: '100%'
+                    }}
+                  />
+                </Grid>
+
                 <Grid
                   item
                   sm={12}
-                  md={6}
+                  md={5}
                   style={{
                     textAlign: 'justify',
-                    paddingLeft: 16
+                    paddingRight: 16
                   }}
                 >
                   <LoginButtonContainer>

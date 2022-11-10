@@ -5,9 +5,6 @@ import Cookies from 'js-cookie';
 
 export const useHomeScreenRules = () => {
   const [authToken, setAuthToken] = useState(Cookies.get('spotifyAuthToken'));
-  const [isAuthenticated, setisAuthenticated] = useState<boolean>(
-    authToken ? true : false
-  );
   const [currentInput, setCurrentInput] = useState<string>('');
   const [currentQuantity, setCurrentQuantity] = useState<number>(10);
   const [similarArtists, setSimilarArtists] = useState<boolean>(false);
@@ -28,6 +25,11 @@ export const useHomeScreenRules = () => {
         : false,
     [currentQuantity, selectedArtists.length, similarArtists]
   );
+
+  const handleLogout = useCallback(() => {
+    Cookies.remove('spotifyAuthToken');
+    setAuthToken(undefined);
+  }, []);
 
   const handleInput = useCallback((value: string) => {
     setCurrentInput(value);
@@ -161,7 +163,6 @@ export const useHomeScreenRules = () => {
     quantityError,
     setAuthToken,
     authToken,
-    isAuthenticated,
-    setisAuthenticated
+    handleLogout
   };
 };
