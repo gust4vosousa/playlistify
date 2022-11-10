@@ -35,16 +35,17 @@ import styles from '../../theme/styles.module.css';
 import { Fragment } from 'react';
 import ShareIcon from '@mui/icons-material/Share';
 import { PlaylistModal } from '../../modals/Playlist/PlaylistModal';
+import { IPostPlaylistRequest } from '../../hooks/spotifyServices/useSpotifyServicesHook.types';
 
 export const HomeScreen: React.FC<IHomeScreenProps> = () => {
   const {
+    currentInput,
     artistList,
     isSearchBusy,
     handleInput,
     handleOnSearch,
     handleSelect,
     selectedArtists,
-    currentInput,
     setSelectedArtists,
     handleQuantity,
     currentQuantity,
@@ -54,14 +55,24 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
     playlist,
     isPlaylistBusy,
     quantityError,
-    setAuthToken,
     authToken,
-    handleLogout
+    setAuthToken,
+    handleExport,
+    isModalVisible,
+    setIsModalVisible
   } = useHomeScreenRules();
 
   return (
     <HomeContainer>
-      {/* <PlaylistModal /> */}
+      {isModalVisible && (
+        <PlaylistModal
+          open={isModalVisible}
+          onHandleClose={() => setIsModalVisible(false)}
+          onHandleSubmit={(formData: IPostPlaylistRequest) =>
+            handleExport(formData)
+          }
+        />
+      )}
       <Header>
         <TitleContainer>
           <Typography
@@ -72,7 +83,6 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
           </Typography>
           <LibraryMusicIcon fontSize='large' />
         </TitleContainer>
-        <ButtonComponent onClick={handleLogout}>Logout</ButtonComponent>
       </Header>
 
       <Grid container spacing={0}>
@@ -113,7 +123,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                     <Typography fontSize='inherit'>
                       Mas antes de começar a explorar um novo jeito de ouvir
                       música, preciso que você faça login usando sua conta do
-                      Spotify™
+                      Spotify™.
                     </Typography>
                   </TextContainer>
                 </Grid>
@@ -143,11 +153,19 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       </Typography>
                     </TextContainer>
                     <SpotifyAuth
-                      redirectUri='https://gust4vosousa.github.io/playlistify/'
+                      // redirectUri='https://gust4vosousa.github.io/playlistify/'
+                      redirectUri='http://localhost:3000/callback'
                       clientID='330697a441ab4628898c9da7100cec1c'
-                      scopes={[Scopes.userReadPrivate, Scopes.userReadEmail]}
-                      onAccessToken={(token: string) => setAuthToken(token)}
-                      title='Login com Spotify'
+                      scopes={[
+                        Scopes.userReadPrivate,
+                        Scopes.userReadEmail,
+                        Scopes.playlistModifyPrivate,
+                        Scopes.playlistModifyPublic
+                      ]}
+                      onAccessToken={(token: string) => {
+                        setAuthToken(token);
+                      }}
+                      title='Continuar com Spotify'
                       btnClassName={styles.Button}
                       logoClassName={styles.Logo}
                     />
@@ -221,6 +239,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                               <ButtonComponent
                                 variant='contained'
                                 startIcon={<ShareIcon />}
+                                onClick={() => setIsModalVisible(true)}
                               >
                                 Exportar
                               </ButtonComponent>

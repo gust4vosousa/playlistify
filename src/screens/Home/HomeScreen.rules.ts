@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { IArtist, ITrack } from '../../@types/Entity.types';
 import { useSpotifyServicesHook } from '../../hooks/spotifyServices/useSpotifyServicesHook';
 import Cookies from 'js-cookie';
+import { IPostPlaylistRequest } from '../../hooks/spotifyServices/useSpotifyServicesHook.types';
 
 export const useHomeScreenRules = () => {
   const [authToken, setAuthToken] = useState(Cookies.get('spotifyAuthToken'));
@@ -10,11 +11,12 @@ export const useHomeScreenRules = () => {
   const [similarArtists, setSimilarArtists] = useState<boolean>(false);
   const [isSearchBusy, setIsSearchBusy] = useState<boolean>(false);
   const [isPlaylistBusy, setIsPlaylistBusy] = useState<boolean>(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [searchResult, setSearchResult] = useState<IArtist[]>([]);
   const [selectedArtists, setSelectedArtists] = useState<IArtist[]>([]);
   const [playlist, setPlaylist] = useState<ITrack[]>([]);
 
-  const getArtistsHook = useSpotifyServicesHook(authToken);
+  const spotifyServices = useSpotifyServicesHook(authToken);
 
   const quantityError = useMemo(
     () =>
@@ -26,10 +28,16 @@ export const useHomeScreenRules = () => {
     [currentQuantity, selectedArtists.length, similarArtists]
   );
 
-  const handleLogout = useCallback(() => {
-    Cookies.remove('spotifyAuthToken');
-    setAuthToken(undefined);
-  }, []);
+  const handleExport = useCallback(
+    async (formData: IPostPlaylistRequest) => {
+      const playlistId = await spotifyServices.createPlaylist(formData);
+      await spotifyServices.addItemsToPlaylist(
+        playlistId!,
+        playlist.map((track) => track.uri)
+      );
+    },
+    [playlist, spotifyServices]
+  );
 
   const handleInput = useCallback((value: string) => {
     setCurrentInput(value);
@@ -42,11 +50,11 @@ export const useHomeScreenRules = () => {
   const handleOnSearch = useCallback(async () => {
     setIsSearchBusy(true);
 
-    const artistList = await getArtistsHook.searchArtists(currentInput);
+    const artistList = await spotifyServices.searchArtists(currentInput);
 
     setSearchResult(artistList?.artists?.items!);
     setIsSearchBusy(false);
-  }, [currentInput, getArtistsHook]);
+  }, [currentInput, spotifyServices]);
 
   const handleSelect = useCallback(
     (artist: IArtist) => {
@@ -64,19 +72,19 @@ export const useHomeScreenRules = () => {
 
   const handleRelatedArtists = useCallback(async () => {
     const relatedList = selectedArtists.map(async (artist) => {
-      const list = await getArtistsHook.getRelatedArtists(artist.id);
+      const list = await spotifyServices.getRelatedArtists(artist.id);
       return list!;
     });
 
     const data = await Promise.all(relatedList);
 
     return data.flat(1);
-  }, [getArtistsHook, selectedArtists]);
+  }, [spotifyServices, selectedArtists]);
 
   const handleTopTracks = useCallback(
     async (data: IArtist[]) => {
       const topTracks = data.map(async (artist) => {
-        const tracks = await getArtistsHook.getArtistTopTracks(artist.id);
+        const tracks = await spotifyServices.getArtistTopTracks(artist.id);
         return tracks!;
       });
 
@@ -84,7 +92,7 @@ export const useHomeScreenRules = () => {
 
       return trackList.flat(1);
     },
-    [getArtistsHook]
+    [spotifyServices]
   );
 
   const shuffleList = useCallback((list: ITrack[]) => {
@@ -163,6 +171,8 @@ export const useHomeScreenRules = () => {
     quantityError,
     setAuthToken,
     authToken,
-    handleLogout
+    handleExport,
+    isModalVisible,
+    setIsModalVisible
   };
 };

@@ -4,7 +4,7 @@ import { theme } from '../../theme/ThemeVariables';
 import { IPlaylistModalProps } from './PlaylistModal.types';
 
 export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
-  const { open, playlistId, onHandleClose, onHandleSubmit } = props;
+  const { open, onHandleClose, onHandleSubmit } = props;
 
   const style = {
     position: 'absolute' as 'absolute',

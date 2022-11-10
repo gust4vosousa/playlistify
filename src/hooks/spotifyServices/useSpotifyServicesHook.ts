@@ -74,20 +74,33 @@ export const useSpotifyServicesHook = (authToken?: string) => {
     }
   };
 
-  const createPlaylist = async (
-    userId: string,
-    params: IPostPlaylistRequest
-  ) => {
+  const getUserId = async () => {
+    const apiUrl = `${baseUrl}/me`;
+
+    try {
+      const response = await axios.get(apiUrl, headers);
+
+      const data: { id: string } = response.data;
+
+      return data.id;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const createPlaylist = async (params: IPostPlaylistRequest) => {
+    const userId = await getUserId();
+
     const apiUrl = `${baseUrl}/users/${userId}/playlists`;
 
     try {
-      const response = await axios.post(apiUrl, params, {
-        ...headers
-      });
+      const response = await axios.post(apiUrl, params, headers);
 
-      const data = response.data;
+      const data: { id: string } = response.data;
 
-      return data;
+      console.log(data);
+
+      return data.id;
     } catch (error) {
       console.log(error);
     }
