@@ -11,8 +11,9 @@ import {
 } from '@material-ui/core';
 import React, { Fragment, useState } from 'react';
 import { InputComponent } from '../../components/Input/InputComponent';
-import { theme } from '../../theme/variables';
+import { ButtonContainer, ModalContainer } from './PlaylistModal.styles';
 import { IPlaylistModalProps } from './PlaylistModal.types';
+import UploadIcon from '@mui/icons-material/Upload';
 
 export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
   const [name, setName] = useState('');
@@ -20,19 +21,6 @@ export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
   const [isPublic, setIsPublic] = useState(false);
 
   const { open, isBusy, onHandleClose, onHandleSubmit } = props;
-
-  const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    backgroundColor: `${theme.background.light}`,
-    color: `${theme.text.primary}`,
-    border: 'none',
-    borderRadius: '8px',
-    padding: 32
-  };
 
   return (
     <Modal
@@ -45,7 +33,7 @@ export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
       }}
     >
       <Fade in={open}>
-        <Box style={{ ...style }}>
+        <ModalContainer>
           {isBusy ? (
             <CircularProgress />
           ) : (
@@ -87,18 +75,22 @@ export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
                   }
                   label='Playlist pública'
                 />
-                <Button
-                  disabled={!name}
-                  onClick={() =>
-                    onHandleSubmit({ name, description, public: isPublic })
-                  }
-                >
-                  Enviar
-                </Button>
+                <ButtonContainer>
+                  <Button
+                    disabled={!name}
+                    onClick={() =>
+                      onHandleSubmit({ name, description, public: isPublic })
+                    }
+                    color='inherit'
+                  >
+                    <UploadIcon style={{ marginRight: 4 }} />
+                    Enviar
+                  </Button>
+                </ButtonContainer>
               </Box>
             </Fragment>
           )}
-        </Box>
+        </ModalContainer>
       </Fade>
     </Modal>
   );

@@ -167,7 +167,7 @@ export const useHomeScreenRules = () => {
   }, [handleTrackList, preparePlaylist]);
 
   return {
-    artistList: searchResult,
+    artistList: searchResult ?? [],
     authToken,
     currentInput,
     currentQuantity,
@@ -180,7 +180,7 @@ export const useHomeScreenRules = () => {
     isModalVisible,
     isPlaylistBusy,
     isSearchBusy,
-    playlist,
+    playlist: playlist ?? [],
     quantityError,
     selectedArtists,
     setAuthToken,

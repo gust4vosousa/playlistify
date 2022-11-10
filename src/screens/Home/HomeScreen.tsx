@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   MenuItem,
   Select,
@@ -157,7 +158,6 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                     </TextContainer>
                     <SpotifyAuth
                       redirectUri='https://gust4vosousa.github.io/playlistify/'
-                      // redirectUri='http://localhost:3000/callback'
                       clientID='330697a441ab4628898c9da7100cec1c'
                       scopes={[
                         Scopes.userReadPrivate,
@@ -209,7 +209,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
 
                 {isSearchBusy && <CircularProgress style={{ margin: 10 }} />}
 
-                {!isSearchBusy && artistList.length > 0 && (
+                {!isSearchBusy && artistList?.length > 0 && (
                   <ArtistListComponent
                     data={artistList}
                     handleSelect={handleSelect}
@@ -219,7 +219,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
             </Grid>
 
             <Grid item sm={12} md={6}>
-              {!isPlaylistBusy && playlist.length >= 1 && (
+              {!isPlaylistBusy && playlist?.length >= 1 && (
                 <Grid item xs={12}>
                   <CardComponent elevation={3}>
                     <Typography fontSize={24}>
