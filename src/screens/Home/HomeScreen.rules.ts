@@ -3,11 +3,11 @@ import { IArtist, ITrack } from '../../@types/Entity.types';
 import { useSpotifyServicesHook } from '../../hooks/spotifyServices/useSpotifyServicesHook';
 import Cookies from 'js-cookie';
 import { IPostPlaylistRequest } from '../../hooks/spotifyServices/useSpotifyServicesHook.types';
-import { sleep } from '../../utils/sleep';
 
 export const useHomeScreenRules = () => {
   const [authToken, setAuthToken] = useState(Cookies.get('spotifyAuthToken'));
   const [currentInput, setCurrentInput] = useState<string>('');
+  const [lastSearch, setLastSearch] = useState<string>('')
   const [currentQuantity, setCurrentQuantity] = useState<number>(10);
   const [similarArtists, setSimilarArtists] = useState<boolean>(false);
   const [isSearchBusy, setIsSearchBusy] = useState<boolean>(false);
@@ -41,18 +41,18 @@ export const useHomeScreenRules = () => {
   );
 
   const handleOnSearch = useCallback(async () => {
+    if (lastSearch === currentInput) {
+      return
+    }
+
     setIsSearchBusy(true);
 
     const artistList = await spotifyServices.searchArtists(currentInput);
 
+    setLastSearch(currentInput)
     setSearchResult(artistList?.artists?.items!);
     setIsSearchBusy(false);
-  }, [currentInput, spotifyServices]);
-
-  const handleInput = useCallback((value: string) => {
-    setCurrentInput(value);
-    sleep(2000).then(() => handleOnSearch)
-  }, [handleOnSearch]);
+  }, [currentInput, lastSearch, spotifyServices]);
 
   const handleQuantity = useCallback((value: number) => {
     setCurrentQuantity(value);
@@ -139,7 +139,6 @@ export const useHomeScreenRules = () => {
   );
 
   const handleOnSubmit = useCallback(async () => {
-    try {
       setIsPlaylistBusy(true);
       setPlaylist([]);
 
@@ -147,34 +146,30 @@ export const useHomeScreenRules = () => {
       const playlistData = preparePlaylist(trackList);
 
       setPlaylist(playlistData);
-    } catch (error) {
-      console.log(error);
-    } finally {
       setIsPlaylistBusy(false);
-    }
   }, [handleTrackList, preparePlaylist]);
 
   return {
-    currentInput,
     artistList: searchResult,
-    isSearchBusy,
-    handleInput,
-    handleOnSearch,
-    handleSelect,
-    selectedArtists,
-    setSelectedArtists,
-    handleQuantity,
-    currentQuantity,
-    similarArtists,
-    setSimilarArtists,
-    handleOnSubmit,
-    playlist,
-    isPlaylistBusy,
-    quantityError,
-    setAuthToken,
     authToken,
+    currentInput,
+    currentQuantity,
     handleExport,
+    handleOnSearch,
+    handleOnSubmit,
+    handleQuantity,
+    handleSelect,
     isModalVisible,
-    setIsModalVisible
+    isPlaylistBusy,
+    isSearchBusy,
+    playlist,
+    quantityError,
+    selectedArtists,
+    setAuthToken,
+    setCurrentInput,
+    setIsModalVisible,
+    setSelectedArtists,
+    setSimilarArtists,
+    similarArtists
   };
 };

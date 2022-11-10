@@ -6,7 +6,9 @@ import {
   InputLabel,
   Checkbox,
   FormControlLabel,
-  Box
+  Box,
+  Grid,
+  CircularProgress,
 } from '@mui/material';
 import { InputComponent } from '../../components/Input/InputComponent';
 import { useHomeScreenRules } from './HomeScreen.rules';
@@ -22,7 +24,6 @@ import {
   ListContainer
 } from './HomeScreen.styles';
 import SearchIcon from '@mui/icons-material/Search';
-import { Grid } from '@material-ui/core';
 import { ArtistListComponent } from '../../components/ArtistList/ArtistListComponent';
 import ClearIcon from '@mui/icons-material/Clear';
 import { theme } from '../../theme/ThemeVariables';
@@ -39,27 +40,27 @@ import { IPostPlaylistRequest } from '../../hooks/spotifyServices/useSpotifyServ
 
 export const HomeScreen: React.FC<IHomeScreenProps> = () => {
   const {
-    currentInput,
     artistList,
-    isSearchBusy,
-    handleInput,
-    handleOnSearch,
-    handleSelect,
-    selectedArtists,
-    setSelectedArtists,
-    handleQuantity,
-    currentQuantity,
-    similarArtists,
-    setSimilarArtists,
-    handleOnSubmit,
-    playlist,
-    isPlaylistBusy,
-    quantityError,
     authToken,
-    setAuthToken,
+    currentInput,
+    currentQuantity,
     handleExport,
+    handleOnSearch,
+    handleOnSubmit,
+    handleQuantity,
+    handleSelect,
     isModalVisible,
-    setIsModalVisible
+    isPlaylistBusy,
+    isSearchBusy,
+    playlist,
+    quantityError,
+    selectedArtists,
+    setAuthToken,
+    setCurrentInput,
+    setIsModalVisible,
+    setSelectedArtists,
+    setSimilarArtists,
+    similarArtists
   } = useHomeScreenRules();
 
   return (
@@ -186,7 +187,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                     <InputComponent
                       label='Artista'
                       value={currentInput}
-                      onChange={handleInput}
+                      onChange={value => setCurrentInput(value)}
                       onSubmit={handleOnSearch}
                     />
                   </Grid>
@@ -197,12 +198,14 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       disabled={isSearchBusy || currentInput === ''}
                       startIcon={<SearchIcon />}
                     >
-                      Buscar
+                    Buscar
                     </ButtonComponent>
                   </Grid>
                 </Grid>
 
-                {artistList.length > 0 && (
+                {isSearchBusy && (<CircularProgress style={{margin: 10}} />)}
+
+                {!isSearchBusy && artistList.length > 0 && (
                   <ArtistListComponent
                     data={artistList}
                     handleSelect={handleSelect}
@@ -212,7 +215,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
             </Grid>
 
             <Grid item sm={12} md={6}>
-              {playlist.length >= 1 && (
+              {!isPlaylistBusy && playlist.length >= 1 && (
                 <Grid item xs={12}>
                   <CardComponent elevation={3}>
                     <Typography fontSize={24}>
@@ -316,18 +319,18 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       />
                     </Grid>
                     <Grid item xs={6}>
-                      <ButtonComponent
+                    {isPlaylistBusy ? (<CircularProgress style={{margin: 10}} />) : (<ButtonComponent
                         variant='contained'
                         onClick={handleOnSubmit}
                         disabled={
                           selectedArtists.length <= 0 ||
-                          isPlaylistBusy ||
                           quantityError
                         }
                         startIcon={<PlayCircleOutlineIcon />}
                       >
                         Gerar playlist
-                      </ButtonComponent>
+                      </ButtonComponent>)}
+                      
                     </Grid>
                     <Grid item>
                       <Typography fontSize={24}>
