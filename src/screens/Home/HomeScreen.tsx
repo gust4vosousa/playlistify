@@ -187,6 +187,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                     <InputComponent
                       label='Artista'
                       value={currentInput}
+                      placeholder='Ex.: Madonna'
                       onChange={value => setCurrentInput(value)}
                       onSubmit={handleOnSearch}
                     />

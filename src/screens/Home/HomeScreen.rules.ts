@@ -159,7 +159,7 @@ export const useHomeScreenRules = () => {
     handleOnSubmit,
     handleQuantity,
     handleSelect,
-    isModalVisible,
+    isModalVisible: true,
     isPlaylistBusy,
     isSearchBusy,
     playlist,

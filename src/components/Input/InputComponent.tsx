@@ -6,13 +6,14 @@ import { IInputProps } from './InputComponent.types';
 export const InputComponent: React.FC<IInputProps> = ({
   label,
   value,
+  placeholder,
   onChange,
   onSubmit
 }) => (
   <Fragment>
     <Input
       variant='standard'
-      placeholder='Ex.: Madonna'
+      placeholder={placeholder}
       label={label}
       value={value}
       onKeyUp={(event) => {

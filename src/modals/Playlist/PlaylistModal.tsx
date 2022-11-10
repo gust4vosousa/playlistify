@@ -1,9 +1,14 @@
-import { Box, Fade, Modal, Typography, Backdrop } from '@material-ui/core';
+import { Box, Fade, Modal, Typography, Backdrop, Checkbox } from '@material-ui/core';
 import React, { useState } from 'react';
+import { InputComponent } from '../../components/Input/InputComponent';
 import { theme } from '../../theme/ThemeVariables';
 import { IPlaylistModalProps } from './PlaylistModal.types';
 
 export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+  const [isPublic, setIsPublic] = useState(false)
+
   const { open, onHandleClose, onHandleSubmit } = props;
 
   const style = {
@@ -32,8 +37,22 @@ export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
       <Fade in={open}>
         <Box style={{ ...style }}>
           <Typography variant='h6' component='h2'>
-            Text in a modal
+            Quase lá! só preciso saber mais algumas coisinhas
           </Typography>
+          <InputComponent 
+          label='Nome'
+                      value={name}
+                      onChange={value => setName(value)}
+                      />
+                      <InputComponent 
+          label='Descrição (opcional)'
+                      value={name}
+                      onChange={value => setName(value)}
+                      />
+                                                <Checkbox
+                            checked={isPublic}
+                            onChange={() => setIsPublic(!isPublic)}
+                          />
         </Box>
       </Fade>
     </Modal>
