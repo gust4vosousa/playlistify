@@ -220,43 +220,51 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
               {!isPlaylistBusy && playlist?.length >= 1 && (
                 <Grid item xs={12}>
                   <CardComponent elevation={3}>
-                    {isSuccess ? (<SuccessMessage><Typography>Playlist exportada com sucesso!</Typography> </SuccessMessage>) : (<Fragment>                    <Typography fontSize={24}>
-                      {'Eba! Sua playlist tá pronta :)'}
-                    </Typography>
-                    <Typography fontSize={18}>
-                      Ah, e você também pode exportar essa playlist para sua
-                      conta do Spotify com apenas um clique!
-                    </Typography>
-                    <Grid container spacing={1}>
-                      <Grid item xs={12}>
-                        <ListContainer>
-                          <Grid
-                            container
-                            spacing={2}
-                            style={{ alignItems: 'center' }}
-                          >
-                            <Grid item xs={12} sm={6}>
-                              <Typography fontSize={32} fontWeight={600}>
-                                Playlist
-                              </Typography>
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                              <ButtonComponent
-                                variant='contained'
-                                startIcon={<ShareIcon />}
-                                onClick={() => setIsModalVisible(true)}
+                    {isSuccess ? (
+                      <SuccessMessage>
+                        <Typography>Playlist exportada com sucesso!</Typography>
+                      </SuccessMessage>
+                    ) : (
+                      <Fragment>
+                        {' '}
+                        <Typography fontSize={24}>
+                          {'Eba! Sua playlist tá pronta :)'}
+                        </Typography>
+                        <Typography fontSize={18}>
+                          Ah, e você também pode exportar essa playlist para sua
+                          conta do Spotify com apenas um clique!
+                        </Typography>
+                        <Grid container spacing={1}>
+                          <Grid item xs={12}>
+                            <ListContainer>
+                              <Grid
+                                container
+                                spacing={2}
+                                style={{ alignItems: 'center' }}
                               >
-                                Exportar
-                              </ButtonComponent>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <TrackListComponent data={playlist} />
-                            </Grid>
+                                <Grid item xs={12} sm={6}>
+                                  <Typography fontSize={32} fontWeight={600}>
+                                    Playlist
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                  <ButtonComponent
+                                    variant='contained'
+                                    startIcon={<ShareIcon />}
+                                    onClick={() => setIsModalVisible(true)}
+                                  >
+                                    Exportar
+                                  </ButtonComponent>
+                                </Grid>
+                                <Grid item xs={12}>
+                                  <TrackListComponent data={playlist} />
+                                </Grid>
+                              </Grid>
+                            </ListContainer>
                           </Grid>
-                        </ListContainer>
-                      </Grid>
-                    </Grid></Fragment>)}
-
+                        </Grid>
+                      </Fragment>
+                    )}
                   </CardComponent>
                 </Grid>
               )}

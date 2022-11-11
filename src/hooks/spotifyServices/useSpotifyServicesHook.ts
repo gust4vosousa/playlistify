@@ -94,7 +94,7 @@ export const useSpotifyServicesHook = (authToken?: string) => {
     const apiUrl = `${baseUrl}/users/${userId}/playlists`;
 
     try {
-      const response = await axios.post(apiUrl, {...params}, headers);
+      const response = await axios.post(apiUrl, { ...params }, headers);
 
       const data: { id: string } = response.data;
 

@@ -16,7 +16,8 @@ import { ButtonContainer, ModalContainer } from './PlaylistModal.styles';
 import { EFormFields, IPlaylistModalProps } from './PlaylistModal.types';
 
 export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
-  const { open, isBusy, values,  onChange, onHandleClose, onHandleSubmit } = props;
+  const { open, isBusy, values, onChange, onHandleClose, onHandleSubmit } =
+    props;
 
   return (
     <Modal
@@ -66,7 +67,9 @@ export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
                   control={
                     <Checkbox
                       checked={values.public}
-                      onChange={() => onChange(!values.public, EFormFields.public)}
+                      onChange={() =>
+                        onChange(!values.public, EFormFields.public)
+                      }
                     />
                   }
                   label='Playlist pública'

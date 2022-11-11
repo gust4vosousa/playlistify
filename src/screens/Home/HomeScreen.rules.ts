@@ -7,8 +7,8 @@ import { EFormFields } from '../../modals/Playlist/PlaylistModal.types';
 const PLAYLIST_INFO_INITIAL_STATE: IPostPlaylistRequest = {
   name: '',
   public: false,
-  description: '',
-} 
+  description: ''
+};
 
 export const useHomeScreenRules = () => {
   const [authToken, setAuthToken] = useState<string>('');
@@ -20,11 +20,13 @@ export const useHomeScreenRules = () => {
   const [isPlaylistBusy, setIsPlaylistBusy] = useState<boolean>(false);
   const [isExportBusy, setIsExportBusy] = useState<boolean>(false);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false)
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [searchResult, setSearchResult] = useState<IArtist[]>([]);
   const [selectedArtists, setSelectedArtists] = useState<IArtist[]>([]);
   const [playlist, setPlaylist] = useState<ITrack[]>([]);
-  const [playlistInfo, setPlaylistInfo] = useState<IPostPlaylistRequest>(PLAYLIST_INFO_INITIAL_STATE)
+  const [playlistInfo, setPlaylistInfo] = useState<IPostPlaylistRequest>(
+    PLAYLIST_INFO_INITIAL_STATE
+  );
 
   const spotifyServices = useSpotifyServicesHook(authToken);
 
@@ -38,40 +40,47 @@ export const useHomeScreenRules = () => {
     [currentQuantity, selectedArtists.length, similarArtists]
   );
 
-  const handleFormChange = useCallback((value: string | boolean, field: EFormFields) => {
-    setPlaylistInfo({...playlistInfo, [field]: value})
-  },[playlistInfo])
-
-  const handleExport = useCallback(
-    async () => {
-        setIsExportBusy(true);
-
-        const description = playlistInfo.description.length > 0 
-        ? playlistInfo.description 
-        : 'Playlist gerada automaticamente pelo Playlistify'
-    
-        const playlistPostRequestData: IPostPlaylistRequest = {
-          name: playlistInfo.name,
-          public: playlistInfo.public,
-          description
-        };
-  
-        const playlistId = await spotifyServices.createPlaylist(
-          playlistPostRequestData
-        );
-  
-        await spotifyServices.addItemsToPlaylist(
-          playlistId!,
-          playlist.map((track) => track.uri)
-        );
-
-        setPlaylistInfo(PLAYLIST_INFO_INITIAL_STATE)
-        setIsModalVisible(false);
-        setIsExportBusy(false);
-        setIsSuccess(true)
+  const handleFormChange = useCallback(
+    (value: string | boolean, field: EFormFields) => {
+      setPlaylistInfo({ ...playlistInfo, [field]: value });
     },
-    [playlist, playlistInfo.description, playlistInfo.name, playlistInfo.public, spotifyServices]
+    [playlistInfo]
   );
+
+  const handleExport = useCallback(async () => {
+    setIsExportBusy(true);
+
+    const description =
+      playlistInfo.description.length > 0
+        ? playlistInfo.description
+        : 'Playlist gerada automaticamente pelo Playlistify';
+
+    const playlistPostRequestData: IPostPlaylistRequest = {
+      name: playlistInfo.name,
+      public: playlistInfo.public,
+      description
+    };
+
+    const playlistId = await spotifyServices.createPlaylist(
+      playlistPostRequestData
+    );
+
+    await spotifyServices.addItemsToPlaylist(
+      playlistId!,
+      playlist.map((track) => track.uri)
+    );
+
+    setPlaylistInfo(PLAYLIST_INFO_INITIAL_STATE);
+    setIsModalVisible(false);
+    setIsExportBusy(false);
+    setIsSuccess(true);
+  }, [
+    playlist,
+    playlistInfo.description,
+    playlistInfo.name,
+    playlistInfo.public,
+    spotifyServices
+  ]);
 
   const handleOnSearch = useCallback(async () => {
     if (lastSearch === currentInput) {
