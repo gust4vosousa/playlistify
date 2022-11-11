@@ -1,13 +1,13 @@
 import {
+  Avatar,
   List,
   ListItem,
-  ListItemText,
   ListItemAvatar,
-  Avatar
+  ListItemText
 } from '@mui/material';
 import React, { Fragment } from 'react';
-import { ITrackListProps } from './TrackListComponent.types';
 import { ItemContainer } from './TrackListComponent.styles';
+import { ITrackListProps } from './TrackListComponent.types';
 
 export const TrackListComponent: React.FC<ITrackListProps> = ({ data }) => {
   return (

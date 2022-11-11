@@ -1,17 +1,17 @@
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Avatar,
+  Divider,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
   ListItemButton,
-  ListItemText,
-  IconButton,
-  Divider
+  ListItemText
 } from '@mui/material';
 import React, { Fragment } from 'react';
 import { ListContainer } from './ArtistListComponent.styles';
 import { IArtistListProps } from './ArtistListComponent.types';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 export const ArtistListComponent: React.FC<IArtistListProps> = ({
   data,

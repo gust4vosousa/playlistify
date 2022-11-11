@@ -1,43 +1,42 @@
-import React from 'react';
-import {
-  MenuItem,
-  Select,
-  Typography,
-  FormControl,
-  InputLabel,
-  Checkbox,
-  FormControlLabel,
-  Box,
-  Grid,
-  CircularProgress
-} from '@mui/material';
-import { InputComponent } from '../../components/Input/InputComponent';
-import { useHomeScreenRules } from './HomeScreen.rules';
-import {
-  HomeContainer,
-  Header,
-  ButtonComponent,
-  CardComponent,
-  TitleContainer,
-  ErrorMessage,
-  TextContainer,
-  LoginButtonContainer,
-  ListContainer
-} from './HomeScreen.styles';
-import SearchIcon from '@mui/icons-material/Search';
-import { ArtistListComponent } from '../../components/ArtistList/ArtistListComponent';
 import ClearIcon from '@mui/icons-material/Clear';
-import { theme } from '../../theme/variables';
-import { TrackListComponent } from '../../components/TrackList/TrackListComponent';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
-import { IHomeScreenProps } from './HomeScreen.types';
-import { SpotifyAuth, Scopes } from 'react-spotify-auth';
-import styles from '../../theme/styles.module.css';
-import { Fragment } from 'react';
+import SearchIcon from '@mui/icons-material/Search';
 import ShareIcon from '@mui/icons-material/Share';
-import { PlaylistModal } from '../../modals/Playlist/PlaylistModal';
+import {
+  Box,
+  Checkbox,
+  CircularProgress,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography
+} from '@mui/material';
+import React, { Fragment } from 'react';
+import { Scopes, SpotifyAuth } from 'react-spotify-auth';
+import { ArtistListComponent } from '../../components/ArtistList/ArtistListComponent';
+import { InputComponent } from '../../components/Input/InputComponent';
+import { TrackListComponent } from '../../components/TrackList/TrackListComponent';
 import { IPostPlaylistRequest } from '../../hooks/spotifyServices/useSpotifyServicesHook.types';
+import { PlaylistModal } from '../../modals/Playlist/PlaylistModal';
+import styles from '../../theme/styles.module.css';
+import { theme } from '../../theme/variables';
+import { useHomeScreenRules } from './HomeScreen.rules';
+import {
+  ButtonComponent,
+  CardComponent,
+  ErrorMessage,
+  Header,
+  HomeContainer,
+  ListContainer,
+  LoginButtonContainer,
+  TextContainer,
+  TitleContainer
+} from './HomeScreen.styles';
+import { IHomeScreenProps } from './HomeScreen.types';
 
 export const HomeScreen: React.FC<IHomeScreenProps> = () => {
   const {

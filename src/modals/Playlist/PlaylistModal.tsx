@@ -1,19 +1,19 @@
 import {
-  Box,
-  Fade,
-  Modal,
-  Typography,
   Backdrop,
-  Checkbox,
+  Box,
   Button,
+  Checkbox,
+  CircularProgress,
+  Fade,
   FormControlLabel,
-  CircularProgress
+  Modal,
+  Typography
 } from '@material-ui/core';
+import UploadIcon from '@mui/icons-material/Upload';
 import React, { Fragment, useState } from 'react';
 import { InputComponent } from '../../components/Input/InputComponent';
 import { ButtonContainer, ModalContainer } from './PlaylistModal.styles';
 import { IPlaylistModalProps } from './PlaylistModal.types';
-import UploadIcon from '@mui/icons-material/Upload';
 
 export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
   const [name, setName] = useState('');
