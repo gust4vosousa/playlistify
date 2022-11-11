@@ -3,6 +3,14 @@ import { IPostPlaylistRequest } from '../../hooks/spotifyServices/useSpotifyServ
 export interface IPlaylistModalProps {
   open: boolean;
   isBusy: boolean;
+  values: IPostPlaylistRequest;
+  onChange: (value: string | boolean, field: EFormFields) => void
   onHandleClose: () => void;
-  onHandleSubmit: (data: IPostPlaylistRequest) => void;
+  onHandleSubmit: () => void;
+}
+
+export enum EFormFields {
+  name = 'name',
+  description = 'description',
+  public = 'public'
 }

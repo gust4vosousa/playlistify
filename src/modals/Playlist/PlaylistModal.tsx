@@ -10,17 +10,13 @@ import {
   Typography
 } from '@material-ui/core';
 import UploadIcon from '@mui/icons-material/Upload';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { InputComponent } from '../../components/Input/InputComponent';
 import { ButtonContainer, ModalContainer } from './PlaylistModal.styles';
-import { IPlaylistModalProps } from './PlaylistModal.types';
+import { EFormFields, IPlaylistModalProps } from './PlaylistModal.types';
 
 export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [isPublic, setIsPublic] = useState(false);
-
-  const { open, isBusy, onHandleClose, onHandleSubmit } = props;
+  const { open, isBusy, values,  onChange, onHandleClose, onHandleSubmit } = props;
 
   return (
     <Modal
@@ -45,8 +41,8 @@ export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
                 <Typography>Qual o nome da playlist?</Typography>
                 <InputComponent
                   label='Nome'
-                  value={name}
-                  onChange={(value) => setName(value)}
+                  value={values.name}
+                  onChange={(value) => onChange(value, EFormFields.name)}
                 />
               </Box>
 
@@ -54,8 +50,8 @@ export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
                 <Typography>Quer adicionar uma descrição?</Typography>
                 <InputComponent
                   label='Descrição (opcional)'
-                  value={description}
-                  onChange={(value) => setDescription(value)}
+                  value={values.description}
+                  onChange={(value) => onChange(value, EFormFields.description)}
                 />
               </Box>
 
@@ -69,18 +65,16 @@ export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={isPublic}
-                      onChange={() => setIsPublic(!isPublic)}
+                      checked={values.public}
+                      onChange={() => onChange(!values.public, EFormFields.public)}
                     />
                   }
                   label='Playlist pública'
                 />
                 <ButtonContainer>
                   <Button
-                    disabled={!name}
-                    onClick={() =>
-                      onHandleSubmit({ name, description, public: isPublic })
-                    }
+                    disabled={!values.name}
+                    onClick={onHandleSubmit}
                     color='inherit'
                   >
                     <UploadIcon style={{ marginRight: 4 }} />

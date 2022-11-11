@@ -1,4 +1,5 @@
 import { blueGrey, blue, grey, red } from '@material-ui/core/colors';
+import { green } from '@mui/material/colors';
 
 export const theme = {
   main: {
@@ -18,5 +19,8 @@ export const theme = {
   },
   error: {
     primary: red[600]
+  },
+  success: {
+    primary: green[600]
   }
 };

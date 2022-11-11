@@ -55,6 +55,16 @@ export const ErrorMessage = styled(Card)({
   marginBottom: 16
 });
 
+export const SuccessMessage = styled(Card)({
+  display: 'flex',
+  backgroundColor: `${theme.success.primary}`,
+  height: '3rem',
+  color: `${theme.text.primary}`,
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: 16
+});
+
 export const TextContainer = styled(Box)({
   margin: '16px 8px',
   fontSize: 22

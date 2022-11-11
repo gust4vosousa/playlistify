@@ -14,6 +14,6 @@ export interface ITopTracksResponse {
 
 export interface IPostPlaylistRequest {
   name: string;
-  description: string;
   public: boolean;
+  description: string;
 }

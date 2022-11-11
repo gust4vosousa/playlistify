@@ -16,14 +16,14 @@ import {
   Typography
 } from '@mui/material';
 import React, { Fragment } from 'react';
-import { Scopes, SpotifyAuth } from 'react-spotify-auth';
+import { SpotifyAuth } from 'react-spotify-auth';
 import { ArtistListComponent } from '../../components/ArtistList/ArtistListComponent';
 import { InputComponent } from '../../components/Input/InputComponent';
 import { TrackListComponent } from '../../components/TrackList/TrackListComponent';
-import { IPostPlaylistRequest } from '../../hooks/spotifyServices/useSpotifyServicesHook.types';
 import { PlaylistModal } from '../../modals/Playlist/PlaylistModal';
 import styles from '../../theme/styles.module.css';
 import { theme } from '../../theme/variables';
+import { CLIENT_ID, REDIRECT_URI, SCOPES } from '../../utils/variables';
 import { useHomeScreenRules } from './HomeScreen.rules';
 import {
   ButtonComponent,
@@ -33,6 +33,7 @@ import {
   HomeContainer,
   ListContainer,
   LoginButtonContainer,
+  SuccessMessage,
   TextContainer,
   TitleContainer
 } from './HomeScreen.styles';
@@ -45,6 +46,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
     currentInput,
     currentQuantity,
     handleExport,
+    handleFormChange,
     handleOnSearch,
     handleOnSubmit,
     handleQuantity,
@@ -53,7 +55,9 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
     isModalVisible,
     isPlaylistBusy,
     isSearchBusy,
+    isSuccess,
     playlist,
+    playlistInfo,
     quantityError,
     selectedArtists,
     setAuthToken,
@@ -70,10 +74,10 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
         <PlaylistModal
           open={isModalVisible}
           isBusy={isExportBusy}
+          onChange={handleFormChange}
+          values={playlistInfo}
           onHandleClose={() => setIsModalVisible(false)}
-          onHandleSubmit={(formData: IPostPlaylistRequest) =>
-            handleExport(formData)
-          }
+          onHandleSubmit={handleExport}
         />
       )}
       <Header>
@@ -156,14 +160,9 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       </Typography>
                     </TextContainer>
                     <SpotifyAuth
-                      redirectUri='https://gust4vosousa.github.io/playlistify/'
-                      clientID='330697a441ab4628898c9da7100cec1c'
-                      scopes={[
-                        Scopes.userReadPrivate,
-                        Scopes.userReadEmail,
-                        Scopes.playlistModifyPrivate,
-                        Scopes.playlistModifyPublic
-                      ]}
+                      redirectUri={REDIRECT_URI.host}
+                      clientID={CLIENT_ID}
+                      scopes={SCOPES}
                       onAccessToken={(token: string) => {
                         setAuthToken(token);
                       }}
@@ -221,7 +220,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
               {!isPlaylistBusy && playlist?.length >= 1 && (
                 <Grid item xs={12}>
                   <CardComponent elevation={3}>
-                    <Typography fontSize={24}>
+                    {isSuccess ? (<SuccessMessage><Typography>Playlist exportada com sucesso!</Typography> </SuccessMessage>) : (<Fragment>                    <Typography fontSize={24}>
                       {'Eba! Sua playlist tá pronta :)'}
                     </Typography>
                     <Typography fontSize={18}>
@@ -236,12 +235,12 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                             spacing={2}
                             style={{ alignItems: 'center' }}
                           >
-                            <Grid item xs={6}>
+                            <Grid item xs={12} sm={6}>
                               <Typography fontSize={32} fontWeight={600}>
                                 Playlist
                               </Typography>
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={12} sm={6}>
                               <ButtonComponent
                                 variant='contained'
                                 startIcon={<ShareIcon />}
@@ -256,7 +255,8 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                           </Grid>
                         </ListContainer>
                       </Grid>
-                    </Grid>
+                    </Grid></Fragment>)}
+
                   </CardComponent>
                 </Grid>
               )}
