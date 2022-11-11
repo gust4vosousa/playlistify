@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { IArtist, ITrack } from '../../@types/Entity.types';
 import { useSpotifyServicesHook } from '../../hooks/spotifyServices/useSpotifyServicesHook';
 import { IPostPlaylistRequest } from '../../hooks/spotifyServices/useSpotifyServicesHook.types';
@@ -12,8 +12,10 @@ const PLAYLIST_INFO_INITIAL_STATE: IPostPlaylistRequest = {
 
 export const useHomeScreenRules = () => {
   const [authToken, setAuthToken] = useState<string>('');
+  const [currentUser, setCurrentUser] = useState<string>('');
   const [currentInput, setCurrentInput] = useState<string>('');
   const [lastSearch, setLastSearch] = useState<string>('');
+  const [paylistUrl, setPlaylistUrl] = useState<string>('');
   const [currentQuantity, setCurrentQuantity] = useState<number>(10);
   const [similarArtists, setSimilarArtists] = useState<boolean>(false);
   const [isSearchBusy, setIsSearchBusy] = useState<boolean>(false);
@@ -29,6 +31,16 @@ export const useHomeScreenRules = () => {
   );
 
   const spotifyServices = useSpotifyServicesHook(authToken);
+
+  const getCurrentUser = useCallback(async () => {
+    const user = await spotifyServices.getUser();
+    setCurrentUser(user?.display_name ?? '');
+  }, [spotifyServices]);
+
+  useEffect(() => {
+    getCurrentUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const quantityError = useMemo(
     () =>
@@ -61,15 +73,16 @@ export const useHomeScreenRules = () => {
       description
     };
 
-    const playlistId = await spotifyServices.createPlaylist(
+    const createdPlaylist = await spotifyServices.createPlaylist(
       playlistPostRequestData
     );
 
     await spotifyServices.addItemsToPlaylist(
-      playlistId!,
+      createdPlaylist?.id!,
       playlist.map((track) => track.uri)
     );
 
+    setPlaylistUrl(createdPlaylist?.external_urls.spotify!);
     setPlaylistInfo(PLAYLIST_INFO_INITIAL_STATE);
     setIsModalVisible(false);
     setIsExportBusy(false);
@@ -197,6 +210,7 @@ export const useHomeScreenRules = () => {
     authToken,
     currentInput,
     currentQuantity,
+    currentUser,
     handleExport,
     handleFormChange,
     handleOnSearch,
@@ -210,6 +224,7 @@ export const useHomeScreenRules = () => {
     isSuccess,
     playlist: playlist ?? [],
     playlistInfo,
+    paylistUrl,
     quantityError,
     selectedArtists,
     setAuthToken,

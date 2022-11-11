@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { IArtist } from '../../@types/Entity.types';
+import { IArtist, IPlaylist, IUser } from '../../@types/Entity.types';
 import {
   IArtistSearchResponse,
   IPostPlaylistRequest,
@@ -74,31 +74,31 @@ export const useSpotifyServicesHook = (authToken?: string) => {
     }
   };
 
-  const getUserId = async () => {
+  const getUser = async () => {
     const apiUrl = `${baseUrl}/me`;
 
     try {
       const response = await axios.get(apiUrl, headers);
 
-      const data: { id: string } = response.data;
+      const data: IUser = response.data;
 
-      return data.id;
+      return data;
     } catch (error) {
       console.log(error);
     }
   };
 
   const createPlaylist = async (params: IPostPlaylistRequest) => {
-    const userId = await getUserId();
+    const user = await getUser();
 
-    const apiUrl = `${baseUrl}/users/${userId}/playlists`;
+    const apiUrl = `${baseUrl}/users/${user?.id}/playlists`;
 
     try {
       const response = await axios.post(apiUrl, { ...params }, headers);
 
-      const data: { id: string } = response.data;
+      const data: IPlaylist = response.data;
 
-      return data.id;
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -128,6 +128,7 @@ export const useSpotifyServicesHook = (authToken?: string) => {
     searchArtists,
     getRelatedArtists,
     getArtistTopTracks,
+    getUser,
     createPlaylist,
     addItemsToPlaylist
   };

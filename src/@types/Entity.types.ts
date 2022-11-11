@@ -30,4 +30,9 @@ export interface IPlaylist {
   name: string;
   description: string;
   public: boolean;
+  external_urls: { spotify: string };
+}
+export interface IUser {
+  id: string;
+  display_name: string;
 }

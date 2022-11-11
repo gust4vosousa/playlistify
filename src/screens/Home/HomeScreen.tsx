@@ -11,6 +11,7 @@ import {
   FormControlLabel,
   Grid,
   InputLabel,
+  Link,
   MenuItem,
   Select,
   Typography
@@ -45,6 +46,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
     authToken,
     currentInput,
     currentQuantity,
+    currentUser,
     handleExport,
     handleFormChange,
     handleOnSearch,
@@ -58,6 +60,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
     isSuccess,
     playlist,
     playlistInfo,
+    paylistUrl,
     quantityError,
     selectedArtists,
     setAuthToken,
@@ -160,7 +163,7 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       </Typography>
                     </TextContainer>
                     <SpotifyAuth
-                      redirectUri={REDIRECT_URI.host}
+                      redirectUri={REDIRECT_URI.local}
                       clientID={CLIENT_ID}
                       scopes={SCOPES}
                       onAccessToken={(token: string) => {
@@ -180,9 +183,9 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
           <Fragment>
             <Grid item sm={12} md={6}>
               <CardComponent elevation={3}>
-                <Typography fontSize={18}>
-                  Agora me fala quais artistas você quer incluir na playlist
-                </Typography>
+                <Typography
+                  fontSize={18}
+                >{`Olá ${currentUser}, agora me fala quais artistas você quer incluir na playlist`}</Typography>
                 <Grid container spacing={1}>
                   <Grid item xs={9}>
                     <InputComponent
@@ -222,11 +225,21 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                   <CardComponent elevation={3}>
                     {isSuccess ? (
                       <SuccessMessage>
-                        <Typography>Playlist exportada com sucesso!</Typography>
+                        <Typography>
+                          Playlist exportada com sucesso! Você pode acessá-la{' '}
+                          <Link
+                            href={paylistUrl}
+                            underline='always'
+                            color='inherit'
+                            target='_blank'
+                            style={{ fontWeight: 600, cursor: 'pointer' }}
+                          >
+                            aqui
+                          </Link>
+                        </Typography>
                       </SuccessMessage>
                     ) : (
                       <Fragment>
-                        {' '}
                         <Typography fontSize={24}>
                           {'Eba! Sua playlist tá pronta :)'}
                         </Typography>
