@@ -34,7 +34,7 @@ export const useHomeScreenRules = () => {
 
   const getCurrentUser = useCallback(async () => {
     const user = await spotifyServices.getUser();
-    setCurrentUser(user?.display_name ?? '');
+    setCurrentUser(user?.display_name ?? 'amigo(a)');
   }, [spotifyServices]);
 
   useEffect(() => {
@@ -211,6 +211,7 @@ export const useHomeScreenRules = () => {
     currentInput,
     currentQuantity,
     currentUser,
+    getCurrentUser,
     handleExport,
     handleFormChange,
     handleOnSearch,

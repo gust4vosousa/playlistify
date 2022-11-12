@@ -163,12 +163,10 @@ export const HomeScreen: React.FC<IHomeScreenProps> = () => {
                       </Typography>
                     </TextContainer>
                     <SpotifyAuth
-                      redirectUri={REDIRECT_URI.local}
+                      redirectUri={REDIRECT_URI.host}
                       clientID={CLIENT_ID}
                       scopes={SCOPES}
-                      onAccessToken={(token: string) => {
-                        setAuthToken(token);
-                      }}
+                      onAccessToken={(token: string) => setAuthToken(token)}
                       title='Continuar com Spotify'
                       btnClassName={styles.Button}
                       logoClassName={styles.Logo}
