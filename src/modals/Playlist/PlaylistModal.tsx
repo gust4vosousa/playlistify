@@ -9,7 +9,9 @@ import {
   Modal,
   Typography
 } from '@material-ui/core';
+import CloseIcon from '@mui/icons-material/Close';
 import UploadIcon from '@mui/icons-material/Upload';
+import { IconButton } from '@mui/material';
 import React, { Fragment } from 'react';
 import { InputComponent } from '../../components/Input/InputComponent';
 import { ButtonContainer, ModalContainer } from './PlaylistModal.styles';
@@ -35,6 +37,18 @@ export const PlaylistModal: React.FC<IPlaylistModalProps> = (props) => {
             <CircularProgress />
           ) : (
             <Fragment>
+              <Box
+                style={{
+                  display: 'flex',
+                  width: '100%',
+                  alignItems: 'flex-end',
+                  flexDirection: 'column'
+                }}
+              >
+                <IconButton onClick={onHandleClose}>
+                  <CloseIcon />
+                </IconButton>
+              </Box>
               <Typography variant='h6' component='h2'>
                 Quase lá! só preciso saber mais algumas coisinhas
               </Typography>
