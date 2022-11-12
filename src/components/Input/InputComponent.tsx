@@ -16,7 +16,6 @@ export const InputComponent: React.FC<IInputProps> = ({
       placeholder={placeholder}
       label={label}
       value={value}
-      multiline
       onKeyUp={(event) => {
         if (onSubmit !== undefined && event.key === 'Enter') {
           onSubmit();
